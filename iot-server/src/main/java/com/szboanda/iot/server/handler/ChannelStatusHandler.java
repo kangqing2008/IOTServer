@@ -9,7 +9,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 /**
  * Server运行时channel连接和断开事件捕获
  * @author 康庆
- *
  */
 @Sharable 
 public class ChannelStatusHandler extends ChannelInboundHandlerAdapter {

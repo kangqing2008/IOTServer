@@ -10,7 +10,6 @@ import io.netty.channel.socket.SocketChannel;
  * Channel初始化时需要执行的操作
  * 主要是执行往channel的handler pipeline中绑定必须要执行的handler操作
  * @author 康庆
- *
  */
 public class GB211ServerChannelInitializer extends ChannelInitializer<SocketChannel>{
 	private ServerContext context = null; 

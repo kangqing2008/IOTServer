@@ -6,8 +6,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -15,7 +13,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.CharsetUtil;
@@ -51,8 +48,8 @@ public class GB211Client implements Runnable{
 				}
 			});
 			b.connect();
-//			ChannelFuture f = b.connect().sync();
-//			f.channel().closeFuture().sync(); 
+			ChannelFuture f = b.connect().sync();
+			f.channel().closeFuture().sync(); 
 		}catch(Exception ff){
 			ff.printStackTrace();
 		}finally{
@@ -87,7 +84,7 @@ public class GB211Client implements Runnable{
 						i++;  
 						counter.incrementAndGet();
 						if(i%50==0){      
-							Thread.currentThread().sleep(100);    
+							Thread.sleep(100);     
 						}
 					} 
 				}
@@ -97,7 +94,7 @@ public class GB211Client implements Runnable{
 				try{
 					ctx.close().sync();    
 				}finally{
-					latch.countDown();
+					latch.countDown(); 
 				}
 			}
 		}
@@ -132,7 +129,7 @@ public class GB211Client implements Runnable{
 				Thread.sleep(100);    
 			} 
 			//new Thread(new GB211Client(new NioEventLoopGroup(1),host,port)).start();   
-			new GB211Client(group,host,port,latch).start();   
+			new GB211Client(group,host,port,latch).start();    
 		}  
 		latch.await();
 		group.shutdownGracefully().sync();  

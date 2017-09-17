@@ -11,11 +11,12 @@ import com.szboanda.iot.server.listener.IServerStatusListener;
 import com.szboanda.iot.server.listener.IServerStatusListener.Event;
 
 public class ServerStatus implements Serializable {
+	private static final long serialVersionUID = -6457907883882061059L;
 	private AtomicBoolean running = new AtomicBoolean(false); 
 	private AtomicInteger waiting = new AtomicInteger(0);
 	private AtomicInteger channels = new AtomicInteger(0);
 	private AtomicLong	  counter  = new AtomicLong(0);
-	private IServerStatusListener listener = null; 
+	private IServerStatusListener listener = null;  
 	private ServerContext context = null; 
 	private Map<String,AtomicLong> channelCounter = null;
 	
@@ -96,7 +97,7 @@ public class ServerStatus implements Serializable {
 		public void run() {
 			this.listener.channelsChange(Event.ACTIVE, this.count);
 		}
-	}
+	} 
 	
 	private static final class FireChannelInactiveRunner implements Runnable{
 		private IServerStatusListener listener = null;

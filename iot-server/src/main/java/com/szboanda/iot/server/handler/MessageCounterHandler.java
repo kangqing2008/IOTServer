@@ -2,12 +2,9 @@ package com.szboanda.iot.server.handler;
 
 import com.szboanda.iot.server.ServerContext;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandler.*;
-import io.netty.channel.ChannelHandlerContext; 
+import io.netty.buffer.Unpooled; 
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
 
 public class MessageCounterHandler extends ChannelInboundHandlerAdapter{
@@ -21,7 +18,7 @@ public class MessageCounterHandler extends ChannelInboundHandlerAdapter{
 //		this.context.countPlus(); 
 //		super.channelReadComplete(ctx);
 //	}
-	
+	 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		String id = ctx.channel().id().asShortText(); 

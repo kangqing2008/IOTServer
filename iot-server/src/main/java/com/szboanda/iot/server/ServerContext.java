@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.szboanda.iot.server.listener.IServerStatusListener;
-
+ 
 public class ServerContext {
 	private ServerStatus serverStatus = null;
 	private ExecutorService es = null;
@@ -16,7 +16,7 @@ public class ServerContext {
 	public void setServerStatusListener(IServerStatusListener listener){
 		this.serverStatus.setListener(listener);
 	}
-	
+	 
 	/***
 	 * 发布channel active状态
 	 * @return 当前活跃的channel数量

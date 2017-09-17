@@ -6,10 +6,8 @@ import com.szboanda.iot.server.listener.ServerStatusPrinter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class GB211Server {
@@ -67,15 +65,14 @@ public class GB211Server {
 			System.out.println("GB211Server.start:" + ff.getMessage());
 			ff.printStackTrace();
 		}finally{
-			this.group.shutdownGracefully();
+			this.group.shutdownGracefully();  
 		}
 	}
 
 	
 	public static void main(String[] args) {
-		GB211Server server = new GB211Server();
+		GB211Server server = new GB211Server();  
 		server.start();
-		
 	}
 	
 	
