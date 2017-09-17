@@ -6,6 +6,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -47,9 +48,9 @@ public class GB211Client implements Runnable{
 					ch.pipeline().addLast(new ClientTesterHandler(GB211Client.this.latch));     
 				}
 			});
-			b.connect();
-			ChannelFuture f = b.connect().sync();
-			f.channel().closeFuture().sync(); 
+			b.connect();     
+//			ChannelFuture f = b.connect().sync();
+//			f.channel().closeFuture().sync(); 
 		}catch(Exception ff){
 			ff.printStackTrace();
 		}finally{
@@ -68,37 +69,50 @@ public class GB211Client implements Runnable{
 			this.latch = latch;
 		}
  
+		
+		
 		@Override
 		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {  
 			System.out.println("Client " + ManagementFactory.getRuntimeMXBean().getName().split("@")[0] 
 					+ " " + Thread.currentThread().getId() + " read:" + msg); 
+			
+		}
+		
+		@Override
+		public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
 			try{
 				System.out.println("Client " + ManagementFactory.getRuntimeMXBean().getName().split("@")[0] 
 						+ " " + Thread.currentThread().getId() + " channel actived!");
 				int i = 0; 
-				while(i < 100){ 
-					ChannelFuture cf = ctx.writeAndFlush(Unpooled.copiedBuffer("1",CharsetUtil.UTF_8)).sync();
+				
+		        
+				while(i < 100){  
+					ByteBuf firstMessage = Unpooled.buffer(256); 
+			        for (int m = 0; m < firstMessage.capacity(); m ++) {
+			            firstMessage.writeByte((byte) m);
+			        }  
+					ChannelFuture cf = ctx.writeAndFlush(firstMessage).sync();   
 //					System.out.println("Client " + ManagementFactory.getRuntimeMXBean().getName().split("@")[0] 
 //							+ " " + Thread.currentThread().getId() + " count:" + (i+1));    
 					if(cf.isSuccess()){   
 						i++;  
-						counter.incrementAndGet();
+						counter.incrementAndGet();  
 						if(i%50==0){      
 							Thread.sleep(100);     
 						}
 					} 
 				}
-				System.out.println("Client " + ManagementFactory.getRuntimeMXBean().getName().split("@")[0] 
+				System.out.println("Client " + ManagementFactory.getRuntimeMXBean().getName().split("@")[0]
 							+ " " + Thread.currentThread().getId() + " Finished!  count:" + counter.get());
 			}finally{
 				try{
 					ctx.close().sync();    
 				}finally{
 					latch.countDown(); 
-				}
+				} 
 			}
+			super.channelReadComplete(ctx);
 		}
-		
 		
 		@Override
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
@@ -132,6 +146,7 @@ public class GB211Client implements Runnable{
 			new GB211Client(group,host,port,latch).start();    
 		}  
 		latch.await();
+		Thread.sleep(10000); 
 		group.shutdownGracefully().sync();  
 		System.out.println("运行结束..."); 
 	}

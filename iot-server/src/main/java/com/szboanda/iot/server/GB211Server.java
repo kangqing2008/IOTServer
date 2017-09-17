@@ -45,7 +45,7 @@ public class GB211Server {
 	
 	private void destoryContext(){
 		try{
-			this.context.destory();
+			this.context.destory(); 
 			this.context = null;
 			this.group.shutdownGracefully().sync();
 		}catch(Exception ff){
