@@ -5,8 +5,10 @@ import com.szboanda.iot.server.ServerContext;
 import io.netty.buffer.Unpooled; 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.util.CharsetUtil;
 
+@Sharable
 public class MessageCounterHandler extends ChannelInboundHandlerAdapter{
 	private ServerContext context = null;
 	private int count = 0;

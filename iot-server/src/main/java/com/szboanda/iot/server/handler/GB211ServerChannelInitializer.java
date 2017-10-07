@@ -19,13 +19,13 @@ public class GB211ServerChannelInitializer extends ChannelInitializer<SocketChan
 	public GB211ServerChannelInitializer(ServerContext context) {
 		this.context = context;
 		this.activeHandler = new ChannelStatusHandler(this.context);   
-		this.messageCounter = new MessageCounterHandler(this.context); 
+		this.messageCounter = new MessageCounterHandler(this.context);  
 	}
 	
 	@Override
 	protected void initChannel(SocketChannel ch) throws Exception {
-		ch.pipeline().addLast(activeHandler);  
-		ch.pipeline().addLast(new MessageCounterHandler(this.context));   
+		ch.pipeline().addLast(this.activeHandler);  
+		ch.pipeline().addLast(this.messageCounter);   
 	}
 	
 }
