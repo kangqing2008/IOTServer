@@ -5,5 +5,5 @@ public interface IServerStatusListener {
 		ACTIVE,
 		INACTIVE
 	};
-	void channelsChange(Event status,int count);
+	void channelsChange(Event status,String channelId,int count);
 }

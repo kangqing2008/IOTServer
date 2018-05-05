@@ -38,6 +38,8 @@ public class ServerTester {
 			group.shutdownGracefully().sync();
 		}
 	}
+	
+	
 
 	private static class ChannelInitializerTester extends ChannelInitializer{
 

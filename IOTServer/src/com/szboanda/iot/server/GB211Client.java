@@ -51,12 +51,12 @@ public class GB211Client implements Runnable{
 			});
 			b.connect();
 //			ChannelFuture f = b.connect().sync();
-//			f.channel().closeFuture().sync(); 
-		}catch(Exception ff){
+//			f.channel().closeFuture().sync();        
+		}catch(Exception ff){ 
 			ff.printStackTrace();
 		}finally{
 //			try{
-//				group.shutdownGracefully().sync();
+//				group.shutdownGracefully().sync();  
 //			}catch(Exception ff){
 //				ff.printStackTrace(); 
 //			}
@@ -82,8 +82,8 @@ public class GB211Client implements Runnable{
 				System.out.println("Client " + ManagementFactory.getRuntimeMXBean().getName().split("@")[0] 
 						+ " " + Thread.currentThread().getId() + " channel actived!");
 				int i = 0; 
-				while(i < 100){ 
-					ChannelFuture cf = ctx.writeAndFlush(Unpooled.copiedBuffer("1",CharsetUtil.UTF_8)).sync();
+				while(i < 500){   
+					ChannelFuture cf = ctx.channel().writeAndFlush(Unpooled.copiedBuffer("1",CharsetUtil.UTF_8)).sync();
 //					System.out.println("Client " + ManagementFactory.getRuntimeMXBean().getName().split("@")[0] 
 //							+ " " + Thread.currentThread().getId() + " count:" + (i+1));    
 					if(cf.isSuccess()){   
@@ -98,7 +98,9 @@ public class GB211Client implements Runnable{
 							+ " " + Thread.currentThread().getId() + " Finished!  count:" + counter.get());
 			}finally{
 				try{
+					ctx.flush();
 					ctx.close().sync();   
+					
 				}finally{
 					latch.countDown();
 				}
@@ -118,10 +120,10 @@ public class GB211Client implements Runnable{
 	}
 	
 	
-	public static void main(String[] args)throws Exception{ 
-		int count = 100;   
+	public static void main(String[] args)throws Exception{  
+		int count = 20;   
 		EventLoopGroup group = new NioEventLoopGroup(count);   
-		//ExecutorService es = Executors.newCachedThreadPool(); 
+		//ExecutorService es = Executors.newCachedThreadPool();  
 		String host = "localhost";
 		CountDownLatch latch = new CountDownLatch(count);
 		int port = 8219; 
@@ -130,9 +132,9 @@ public class GB211Client implements Runnable{
 			//new Thread().start(); 
 			//new Thread(new GB211Client(new NioEventLoopGroup(1),host,port)).start();
 			//new GB211Client(new NioEventLoopGroup(1),host,port).start(); 
-			if(i%50==0){ 
-				Thread.sleep(100);    
-			} 
+//			if(i%50==0){ 
+//				Thread.sleep(100);        
+//			}  
 			//new Thread(new GB211Client(new NioEventLoopGroup(1),host,port)).start();   
 			new GB211Client(group,host,port,latch).start();   
 		}  

@@ -23,7 +23,7 @@ public class ChannelStatusHandler extends ChannelInboundHandlerAdapter {
 	 */
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		this.context.fireChannelActive();
+		this.context.fireChannelActive(ctx.channel().id().asShortText());
 		ctx.fireChannelActive();  
 	}
 	 
@@ -32,8 +32,23 @@ public class ChannelStatusHandler extends ChannelInboundHandlerAdapter {
 	 */
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		this.context.fireChannelInactive();
+		this.context.fireChannelInactive(ctx.channel().id().asShortText());
 		ctx.fireChannelInactive();
+	}
+	
+	/**
+	 * 捕获消息读取事件
+	 */
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		this.context.msgCounterPlus(ctx.channel().id().asShortText());
+		ctx.fireChannelRead(msg);
+	}
+	
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+		super.exceptionCaught(ctx, cause);
+		ctx.close();
 	}
 	
 }

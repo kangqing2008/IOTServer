@@ -29,7 +29,9 @@ public class GB211Server {
 			throw new IllegalArgumentException("无效的端口号：" + port);
 		}
 	}
-	
+	/**
+	 * 初始化上下文环境和运行参数
+	 */
 	private void initContext(){
 		if(this.threads < 0){
 			throw new IllegalArgumentException("非法的event loop group threads参数：" + this.threads);
@@ -45,6 +47,7 @@ public class GB211Server {
 		this.strap.childHandler(initializer);   
 	}
 	
+	
 	private void destoryContext(){
 		try{
 			this.context.destory();
@@ -58,6 +61,9 @@ public class GB211Server {
 		}
 	}
 	
+	/**
+	 * 启动Server
+	 */
 	public void start(){
 		try{
 			this.initContext();
@@ -71,7 +77,10 @@ public class GB211Server {
 		}
 	}
 
-	
+	/**
+	 * 启动GB211Server
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		GB211Server server = new GB211Server();
 		server.start();
